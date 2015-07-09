@@ -1,0 +1,7 @@
+C:\Github\AcuityConsole\AcuityConsole\bin\Debug\AcuityConsole.exe.config
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\AcuityConsole.exe.config
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\AcuityConsole.exe
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\AcuityConsole.pdb
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.csprojResolveAssemblyReference.cache
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.exe
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.pdb
