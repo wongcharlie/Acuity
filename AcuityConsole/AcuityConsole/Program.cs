@@ -16,6 +16,8 @@ namespace AcuityConsole
 
             //get all types starting with 4.
             var service = new MarketDataService();
+//            service.AnalyseByCompany("APPLE", 2010, 2015);
+            //todays
             service.ReportOnTypeFours("https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&company=&dateb=&owner=include&start=0&count=4000&output=atom");
 
 
@@ -23,14 +25,21 @@ namespace AcuityConsole
             // limited to 4000 results, can limit with ticker and years.
             //https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3DAPPLE%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first=2001&last=2015&output=atom
 
-            service.ReportOnTypeFours("https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3DAPPLE%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first=2001&last=2015&output=atom");
-            //by company
+
 
         }
     }
 
     internal class MarketDataService
     {
+        public void AnalyseByCompany(string companyName, int startYear, int endYear)
+        {
+            for (int i = startYear; i <= endYear; i++)
+            {
+                ReportOnTypeFours(string.Format("https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3D{0}%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first={1}&last={1}&output=atom", companyName, i));
+            }
+        }
+
         public string FixRssFeed(string feedXml)
         {
             var xml = new XmlDocument(); xml.LoadXml(feedXml);
@@ -55,39 +64,41 @@ namespace AcuityConsole
 
             SyndicationFeed feed = SyndicationFeed.Load(reader);
 
-            if (feed != null)
-                foreach (var item in feed.Items)
+            if (feed == null) return;
+
+            foreach (var item in feed.Items)
+            {
+                //form 4 only. 
+                if (item.Categories[0].Label.Equals("form type", StringComparison.OrdinalIgnoreCase) &&
+                    item.Categories[0].Name.Equals("4", StringComparison.OrdinalIgnoreCase))
                 {
-                    //form 4 only. 
-                    if (item.Categories[0].Label.Equals("form type", StringComparison.OrdinalIgnoreCase) &&
-                        item.Categories[0].Name.Equals("4", StringComparison.OrdinalIgnoreCase))
+                    var docUri = item.Links[0].Uri.IsAbsoluteUri ? item.Links[0].Uri.AbsoluteUri.Replace("http", "https") : string.Format("https://www.sec.gov{0}", item.Links[0].Uri.OriginalString);
+                    docUri = docUri.Replace("-index.htm", ".txt");
+
+                    var res = new WebClient().DownloadString(docUri);
+                    if (!res.Contains("<XML>")) { Console.WriteLine("Not modern xml format."); continue; }
+                    res = res.Substring(res.IndexOf("<XML>", StringComparison.Ordinal) + 5, res.IndexOf("</XML>", StringComparison.Ordinal) - (res.IndexOf("<XML>", StringComparison.Ordinal) + 5)).Trim();
+
+                    var filing = new XmlDocument();
+                    filing.LoadXml(res);
+                    if (filing.DocumentElement != null && filing.DocumentElement.SelectSingleNode("//transactionCode[.='P']") != null)
                     {
-                        var docUri = item.Links[0].Uri.IsAbsoluteUri ? item.Links[0].Uri.AbsoluteUri.Replace("http", "https") : string.Format("https://www.sec.gov{0}", item.Links[0].Uri.OriginalString);
-                        docUri = docUri.Replace("-index.htm", ".txt");
+                        var value =
+                            Convert.ToDouble(
+                                filing.DocumentElement.SelectSingleNode("//transactionShares//value").InnerText) *
+                            Convert.ToDouble(
+                                filing.DocumentElement.SelectSingleNode("//transactionPricePerShare//value")
+                                    .InnerText);
+                        var marketCapString = new MarketDataService().GetMarketCapitalisation(filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText);
 
-                        var res = new WebClient().DownloadString(docUri);
-                        res = res.Substring(res.IndexOf("<XML>", StringComparison.Ordinal) + 5, res.IndexOf("</XML>", StringComparison.Ordinal) - (res.IndexOf("<XML>", StringComparison.Ordinal) + 5)).Trim();
-
-                        var filing = new XmlDocument();
-                        filing.LoadXml(res);
-                        if (filing.DocumentElement != null && filing.DocumentElement.SelectSingleNode("//transactionCode[.='P']") != null)
-                        {
-                            var value =
-                                Convert.ToDouble(
-                                    filing.DocumentElement.SelectSingleNode("//transactionShares//value").InnerText) *
-                                Convert.ToDouble(
-                                    filing.DocumentElement.SelectSingleNode("//transactionPricePerShare//value")
-                                        .InnerText);
-                            var marketCapString = new MarketDataService().GetMarketCapitalisation(filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText);
-
-                            Console.WriteLine("{0} ({1}) - {2} buys {3} on market cap of {4} - {5:P}",
-                                filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
-                                filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
-                                filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
-                                value, marketCapString, value / new ParsingUtils().GetNumericValue(marketCapString));
-                        }
+                        Console.WriteLine("{0} ({1}) - {2} buys {3} on market cap of {4} - {5:P}",
+                            filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
+                            filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
+                            filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
+                            value, marketCapString, value / new ParsingUtils().GetNumericValue(marketCapString));
                     }
                 }
+            }
         }
 
         public string GetMarketCapitalisation(string ticker)
