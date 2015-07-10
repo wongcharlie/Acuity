@@ -12,6 +12,7 @@ namespace AcuityConsole
             //   XmlReader reader = XmlReader.Create("https://www.sec.gov/Archives/edgar/xbrlrss.all.xml");
             //  SyndicationFeed feed = SyndicationFeed.Load(reader);
 
+
             //get all types starting with 4.
             XmlReader reader = XmlReader.Create("https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&company=&dateb=&owner=include&start=0&count=4000&output=atom");
             SyndicationFeed feed = SyndicationFeed.Load(reader);
@@ -52,6 +53,10 @@ namespace AcuityConsole
 
                     }
                 }
+
+            // get all historicl type 4's = https://www.sec.gov/cgi-bin/srch-edgar?text=form-type%3D4&start=1&count=4000&first=2012&last=2015&output=atom
+            // limited to 4000 results, can limit with ticker and years.
+
         }
     }
 
