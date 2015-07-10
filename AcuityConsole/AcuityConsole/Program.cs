@@ -56,6 +56,8 @@ namespace AcuityConsole
 
             // get all historicl type 4's = https://www.sec.gov/cgi-bin/srch-edgar?text=form-type%3D4&start=1&count=4000&first=2012&last=2015&output=atom
             // limited to 4000 results, can limit with ticker and years.
+            //https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3DAPPLE%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first=2001&last=2015&output=atom
+            //by company
 
         }
     }
