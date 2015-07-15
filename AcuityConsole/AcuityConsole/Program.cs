@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using NLog;
 
 namespace AcuityConsole
 {
@@ -16,7 +17,7 @@ namespace AcuityConsole
 
             //get all types starting with 4.
             var service = new MarketDataService();
-//            service.AnalyseByCompany("APPLE", 2010, 2015);
+            //            service.AnalyseByCompany("APPLE", 2010, 2015);
             //todays
             service.ReportOnTypeFours("https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&company=&dateb=&owner=include&start=0&count=4000&output=atom");
 
@@ -32,6 +33,8 @@ namespace AcuityConsole
 
     internal class MarketDataService
     {
+        NLog.Logger logger = new LogFactory().GetLogger("Acuity");
+
         public void AnalyseByCompany(string companyName, int startYear, int endYear)
         {
             for (int i = startYear; i <= endYear; i++)
@@ -91,11 +94,13 @@ namespace AcuityConsole
                                     .InnerText);
                         var marketCapString = new MarketDataService().GetMarketCapitalisation(filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText);
 
-                        Console.WriteLine("{0} ({1}) - {2} buys {3} on market cap of {4} - {5:P}",
-                            filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
-                            filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
-                            filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
-                            value, marketCapString, value / new ParsingUtils().GetNumericValue(marketCapString));
+
+
+                        logger.Info("{0} ({1}) - {2} buys {3} on market cap of {4} - {5:P}",
+                               filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
+                               filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
+                               filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
+                               value, marketCapString, value / new ParsingUtils().GetNumericValue(marketCapString));
                     }
                 }
             }

@@ -5,3 +5,7 @@ C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\A
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.csprojResolveAssemblyReference.cache
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.exe
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\obj\Debug\AcuityConsole.pdb
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\loggr-dotnet.dll
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.dll
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.xml
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.config
