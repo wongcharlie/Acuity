@@ -96,7 +96,7 @@ namespace AcuityConsole
 
 
 
-                        logger.Info("{0} ({1}) - {2} buys {3} on market cap of {4} - {5:P}",
+                        logger.Info("{5:P} {1} ({0}) - {2} buys {3} on market cap of {4}",
                                filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
                                filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
                                filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
