@@ -94,13 +94,17 @@ namespace AcuityConsole
                                     .InnerText);
                         var marketCapString = new MarketDataService().GetMarketCapitalisation(filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText);
 
+                        var transactionDate = Convert.ToDateTime(filing.DocumentElement.SelectSingleNode("//transactionDate//value").InnerText);
 
-
-                        logger.Info("{5:P} {1} ({0}) - {2} buys {3} on market cap of {4}",
+                        logger.Info("{5:P} {1} ({0}) - {2} buys {3} on market cap of {4} (trade date: {6:ddd dd MMM})",
                                filing.DocumentElement.SelectSingleNode("//issuerName") != null ? filing.DocumentElement.SelectSingleNode("//issuerName").InnerText : "",
-                               filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText : "",
+                               filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol") != null ? filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText.ToUpper() : "",
                                filing.DocumentElement.SelectSingleNode("//officerTitle") != null ? filing.DocumentElement.SelectSingleNode("//officerTitle").InnerText : "",
-                               value, marketCapString, value / new ParsingUtils().GetNumericValue(marketCapString));
+                               value,
+                               marketCapString,
+                               value / new ParsingUtils().GetNumericValue(marketCapString),
+                               transactionDate
+                               );
                     }
                 }
             }
