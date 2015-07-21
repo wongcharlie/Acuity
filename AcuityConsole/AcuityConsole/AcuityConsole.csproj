@@ -36,6 +36,13 @@
     <Reference Include="loggr-dotnet">
       <HintPath>..\packages\loggr-dotnet.1.0.9\lib\loggr-dotnet.dll</HintPath>
     </Reference>
+    <Reference Include="MaasOne, Version=0.11.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\MaasOne.dll</HintPath>
+    </Reference>
+    <Reference Include="MaasOne.Yahoo">
+      <HintPath>lib\MaasOne.Yahoo.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
     </Reference>

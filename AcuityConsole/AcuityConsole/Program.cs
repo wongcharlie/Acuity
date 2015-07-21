@@ -1,10 +1,15 @@
-﻿using System;
+﻿using MaasOne;
+using MaasOne.Base;
+
+using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using NLog;
+using MaasOne.Finance.YahooPortfolio;
+
 
 namespace AcuityConsole
 {
@@ -26,7 +31,7 @@ namespace AcuityConsole
             // limited to 4000 results, can limit with ticker and years.
             //https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3DAPPLE%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first=2001&last=2015&output=atom
 
-
+            var mgr = new PortfolioManager(); mgr.LogIn();
 
         }
     }
@@ -134,6 +139,52 @@ namespace AcuityConsole
 
     }
 
+
+    class PortfolioManager
+    {
+
+        private YPortfolioManager mManager = new YPortfolioManager();
+        public void LogIn()
+        {
+            System.Net.NetworkCredential cred = new System.Net.NetworkCredential();
+            cred.UserName = "wong.charlie90";
+            cred.Password = "nextlevel11FU";
+            bool isLoggedIn = mManager.LogIn(cred);
+
+            //
+
+            Response<Portfolio> addResp = mManager.AddPortfolioItem(getPortfolio("InsiderBuys").ID, "GOOG");
+            Portfolio pf = addResp.Result;
+            //foreach (IID id in pf.IDs)
+            //{
+            //    if (id.ID == "GOOG")
+            //    {
+            //        Debug.WriteLine("found");
+            //    }
+            //}
+
+
+        }
+
+        PortfolioInfo getPortfolio(string name)
+        {
+            if (mManager.IsLoggedIn)
+            {
+                PortfolioInfoDownload dl = new PortfolioInfoDownload();
+                dl.Settings.Account = mManager;
+                Response<PortfolioInfoResult> resp = dl.Download();
+                foreach (PortfolioInfo pfi in resp.Result.Items)
+                {
+                    if (pfi.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) return pfi;
+
+                    //string id = pfi.ID;
+                    //string name = pfi.Name;
+                }
+            }
+            return null;
+        }
+
+    }
     internal class ParsingUtils
     {
         public double GetNumericValue(string numericString)

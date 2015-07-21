@@ -9,3 +9,9 @@ C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\l
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.dll
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.xml
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\NLog.config
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.Yahoo.dll
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.dll
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.Yahoo.pdb
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.Yahoo.xml
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.pdb
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.xml
