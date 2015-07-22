@@ -64,6 +64,7 @@ namespace AcuityConsole
                 string value = c.Value;
                 cc.Add(new System.Net.Cookie(name, value, c.Path, c.Domain));
             }
+            cd.Quit();
 
             //Fire off the request
             HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create("https://uk.finance.yahoo.com/portfolio/pf_15/view/dv");
