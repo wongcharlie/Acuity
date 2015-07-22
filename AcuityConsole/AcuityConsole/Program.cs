@@ -1,4 +1,5 @@
-﻿using MaasOne;
+﻿using OpenQA.Selenium.Chrome;
+using MaasOne;
 using MaasOne.Base;
 
 using System;
@@ -17,6 +18,12 @@ namespace AcuityConsole
     {
         static void Main(string[] args)
         {
+
+            var mgr = new WebManager(); mgr.StartSession();
+            //            var mgr = new PortfolioManager(); mgr.LogIn();
+
+
+
             //   XmlReader reader = XmlReader.Create("https://www.sec.gov/Archives/edgar/xbrlrss.all.xml");
             //  SyndicationFeed feed = SyndicationFeed.Load(reader);
 
@@ -31,8 +38,46 @@ namespace AcuityConsole
             // limited to 4000 results, can limit with ticker and years.
             //https://www.sec.gov/cgi-bin/srch-edgar?text=COMPANY-NAME%3DAPPLE%20and%20%20FORM-TYPE%3D4&start=1&count=8000&first=2001&last=2015&output=atom
 
-            var mgr = new PortfolioManager(); mgr.LogIn();
 
+
+        }
+    }
+    class WebManager
+    {
+
+        public void StartSession()
+        {
+            //Run selenium
+            ChromeDriver cd = new ChromeDriver(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "lib"));
+            cd.Url = @"https://login.yahoo.com/config/login?.src=fpctx&.intl=uk&.lang=en-GB&.done=https://uk.yahoo.com/%3fp=us";
+            cd.Navigate();
+            OpenQA.Selenium.IWebElement e = cd.FindElementById("login-username");
+            e.SendKeys("wong.charlie90");
+            e = cd.FindElementById("login-passwd");
+            e.SendKeys("nextlevel11FU");
+            e = cd.FindElementById("login-signin");
+            e.Click();
+
+            CookieContainer cc = new CookieContainer();
+            //Get the cookies
+            foreach (OpenQA.Selenium.Cookie c in cd.Manage().Cookies.AllCookies)
+            {
+                string name = c.Name;
+                string value = c.Value;
+                cc.Add(new System.Net.Cookie(name, value, c.Path, c.Domain));
+            }
+
+            //Fire off the request
+            HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create("https://uk.finance.yahoo.com/portfolio/pf_15/view/dv");
+            hwr.CookieContainer = cc;
+            hwr.Method = "POST";
+            hwr.ContentType = "application/x-www-form-urlencoded";
+            StreamWriter swr = new StreamWriter(hwr.GetRequestStream());
+            swr.Write("feeds=35");
+            swr.Close();
+
+            WebResponse wr = hwr.GetResponse();
+            string s = new System.IO.StreamReader(wr.GetResponseStream()).ReadToEnd();
         }
     }
 
@@ -138,7 +183,6 @@ namespace AcuityConsole
         }
 
     }
-
 
     class PortfolioManager
     {

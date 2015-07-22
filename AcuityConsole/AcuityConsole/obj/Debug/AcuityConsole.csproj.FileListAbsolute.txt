@@ -15,3 +15,6 @@ C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\M
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.Yahoo.xml
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.pdb
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\MaasOne.xml
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\WebDriver.dll
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\WebDriver.xml
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\lib\chromedriver.exe

@@ -36,24 +36,22 @@
     <Reference Include="loggr-dotnet">
       <HintPath>..\packages\loggr-dotnet.1.0.9\lib\loggr-dotnet.dll</HintPath>
     </Reference>
-    <Reference Include="MaasOne, Version=0.11.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\MaasOne.dll</HintPath>
-    </Reference>
-    <Reference Include="MaasOne.Yahoo">
-      <HintPath>lib\MaasOne.Yahoo.dll</HintPath>
-    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebDriver, Version=2.46.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.WebDriver.2.46.0\lib\net40\WebDriver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -69,6 +67,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\README-loggr-dotnet.txt" />
+    <Content Include="lib\chromedriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\MaasOne.dll" />
+    <Content Include="lib\MaasOne.pdb" />
+    <Content Include="lib\MaasOne.xml" />
+    <Content Include="lib\MaasOne.Yahoo.dll" />
+    <Content Include="lib\MaasOne.Yahoo.pdb" />
+    <Content Include="lib\MaasOne.Yahoo.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Source_Code_0.11.2.0\MaasOne.Yahoo\MaasOne.Yahoo.csproj">
+      <Project>{a3c55947-1d21-401b-802c-dbf156061b3e}</Project>
+      <Name>MaasOne.Yahoo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Source_Code_0.11.2.0\MaasOne\MaasOne.csproj">
+      <Project>{203e203c-9025-4d3f-bad7-f36d53e8b9e7}</Project>
+      <Name>MaasOne</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
