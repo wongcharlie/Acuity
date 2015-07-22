@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium.Chrome;
-using MaasOne;
-using MaasOne.Base;
 
 using System;
 using System.Globalization;
@@ -9,7 +7,7 @@ using System.Net;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using NLog;
-using MaasOne.Finance.YahooPortfolio;
+
 
 
 namespace AcuityConsole
@@ -184,51 +182,7 @@ namespace AcuityConsole
 
     }
 
-    class PortfolioManager
-    {
 
-        private YPortfolioManager mManager = new YPortfolioManager();
-        public void LogIn()
-        {
-            System.Net.NetworkCredential cred = new System.Net.NetworkCredential();
-            cred.UserName = "wong.charlie90";
-            cred.Password = "nextlevel11FU";
-            bool isLoggedIn = mManager.LogIn(cred);
-
-            //
-
-            Response<Portfolio> addResp = mManager.AddPortfolioItem(getPortfolio("InsiderBuys").ID, "GOOG");
-            Portfolio pf = addResp.Result;
-            //foreach (IID id in pf.IDs)
-            //{
-            //    if (id.ID == "GOOG")
-            //    {
-            //        Debug.WriteLine("found");
-            //    }
-            //}
-
-
-        }
-
-        PortfolioInfo getPortfolio(string name)
-        {
-            if (mManager.IsLoggedIn)
-            {
-                PortfolioInfoDownload dl = new PortfolioInfoDownload();
-                dl.Settings.Account = mManager;
-                Response<PortfolioInfoResult> resp = dl.Download();
-                foreach (PortfolioInfo pfi in resp.Result.Items)
-                {
-                    if (pfi.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) return pfi;
-
-                    //string id = pfi.ID;
-                    //string name = pfi.Name;
-                }
-            }
-            return null;
-        }
-
-    }
     internal class ParsingUtils
     {
         public double GetNumericValue(string numericString)

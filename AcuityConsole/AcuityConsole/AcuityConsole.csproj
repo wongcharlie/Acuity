@@ -77,16 +77,6 @@
     <Content Include="lib\MaasOne.Yahoo.pdb" />
     <Content Include="lib\MaasOne.Yahoo.XML" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Downloads\Source_Code_0.11.2.0\MaasOne.Yahoo\MaasOne.Yahoo.csproj">
-      <Project>{a3c55947-1d21-401b-802c-dbf156061b3e}</Project>
-      <Name>MaasOne.Yahoo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Downloads\Source_Code_0.11.2.0\MaasOne\MaasOne.csproj">
-      <Project>{203e203c-9025-4d3f-bad7-f36d53e8b9e7}</Project>
-      <Name>MaasOne</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
