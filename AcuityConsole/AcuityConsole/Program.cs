@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium.Chrome;
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -17,11 +16,9 @@ namespace AcuityConsole
         static void Main(string[] args)
         {
 
-            var mgr = new WebManager(); mgr.StartSession();
+            //var mgr = new WebManager(); mgr.StartSession();
             //            var mgr = new PortfolioManager(); mgr.LogIn();
-
-
-
+            
             //   XmlReader reader = XmlReader.Create("https://www.sec.gov/Archives/edgar/xbrlrss.all.xml");
             //  SyndicationFeed feed = SyndicationFeed.Load(reader);
 
@@ -50,9 +47,9 @@ namespace AcuityConsole
             cd.Url = @"https://login.yahoo.com/config/login?.src=fpctx&.intl=uk&.lang=en-GB&.done=https://uk.yahoo.com/%3fp=us";
             cd.Navigate();
             OpenQA.Selenium.IWebElement e = cd.FindElementById("login-username");
-            e.SendKeys("wong.charlie90");
+            e.SendKeys("");
             e = cd.FindElementById("login-passwd");
-            e.SendKeys("nextlevel11FU");
+            e.SendKeys("");
             e = cd.FindElementById("login-signin");
             e.Click();
 
@@ -64,7 +61,7 @@ namespace AcuityConsole
                 string value = c.Value;
                 cc.Add(new System.Net.Cookie(name, value, c.Path, c.Domain));
             }
-            cd.Quit();
+            //cd.Quit();
 
             //Fire off the request
             HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create("https://uk.finance.yahoo.com/portfolio/pf_15/view/dv");
