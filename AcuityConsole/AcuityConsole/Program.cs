@@ -23,7 +23,7 @@ namespace AcuityConsole
         {
             //historical 
 
-//            var s = new Utils().DisplayFileFromFtpServer(new Uri("ftp://ftp.sec.gov/edgar/full-index/2015/QTR1/master.idx"));
+            //            var s = new Utils().DisplayFileFromFtpServer(new Uri("ftp://ftp.sec.gov/edgar/full-index/2015/QTR1/master.idx"));
             var s = File.ReadAllText(@"C:\Users\charlie\Documents\GitHub\Acuity\TestData\master.idx");
 
             FileHelperEngine engine = new FileHelperEngine(typeof(TradeSummary));
@@ -35,7 +35,17 @@ namespace AcuityConsole
                 var mgr = new EdgarService();
                 if (filing.FormType.StartsWith("4"))
                 {
-                    var fullFilingText = new WebClient().DownloadString(string.Format("http://www.sec.gov/Archives/{0}", filing.FileName));
+                    string fullFilingText = null;
+                    try
+                    {
+                        fullFilingText = new WebClient().DownloadString(string.Format("http://www.sec.gov/Archives/{0}", filing.FileName));
+                    }
+                    catch (Exception)
+                    {
+
+                        return;
+                    }
+
                     if (fullFilingText == null) return;
                     var trade = mgr.GetTrade(fullFilingText);
                     if (trade != null && trade.transactionCode == "P")
@@ -183,7 +193,12 @@ namespace AcuityConsole
 
         public Trade GetTrade(string filingText)
         {
-            if (!filingText.Contains("<XML>")) { Console.WriteLine("Not modern xml format."); return null; }
+            if (!filingText.Contains("<XML>"))
+            {
+                // Console.WriteLine("Not modern xml format.");
+                return null;
+
+            }
             filingText = filingText.Substring(filingText.IndexOf("<XML>", StringComparison.Ordinal) + 5, filingText.IndexOf("</XML>", StringComparison.Ordinal) - (filingText.IndexOf("<XML>", StringComparison.Ordinal) + 5)).Trim();
 
             var filing = new XmlDocument();
@@ -191,14 +206,23 @@ namespace AcuityConsole
 
             if (filing.DocumentElement == null || filing.DocumentElement.SelectSingleNode("//transactionCode") == null) return null;
 
-            var trade = new Trade();
-            trade.transactionCode = filing.DocumentElement.SelectSingleNode("//transactionCode").InnerText;
-            if (trade.transactionCode != "P") return null;
-            trade.transactionShares = Convert.ToDouble(filing.DocumentElement.SelectSingleNode("//transactionShares//value").InnerText);
-            trade.transactionPricePerShare = Convert.ToDouble(filing.DocumentElement.SelectSingleNode("//transactionPricePerShare//value").InnerText);
-            trade.issuerTradingSymbol = filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText;
-            trade.marketCapString = new YahooManager().GetMarketCapitalisation(trade.issuerTradingSymbol);
-            trade.transactionDate = Convert.ToDateTime(filing.DocumentElement.SelectSingleNode("//transactionDate//value").InnerText);
+            Trade trade = null;
+            try
+            {
+                trade = new Trade();
+                trade.transactionCode = filing.DocumentElement.SelectSingleNode("//transactionCode").InnerText;
+                if (trade.transactionCode != "P") return null;
+                trade.transactionShares = Convert.ToDouble(filing.DocumentElement.SelectSingleNode("//transactionShares//value").InnerText);
+                trade.transactionPricePerShare = Convert.ToDouble(filing.DocumentElement.SelectSingleNode("//transactionPricePerShare//value").InnerText);
+                trade.issuerTradingSymbol = filing.DocumentElement.SelectSingleNode("//issuerTradingSymbol").InnerText;
+                trade.marketCapString = new YahooManager().GetMarketCapitalisation(trade.issuerTradingSymbol);
+                trade.transactionDate = Convert.ToDateTime(filing.DocumentElement.SelectSingleNode("//transactionDate//value").InnerText);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
 
             return trade;
 
