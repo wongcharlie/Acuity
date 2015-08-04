@@ -1,7 +1,7 @@
 
 ftp://ftp.sec.gov/edgar/daily-index/master.20150728.idx
 pipe delimtered
-/edgar/full-index/2015/QTR3/master.idx
+ftp://ftp.sec.gov/edgar/full-index/2015/QTR3/master.idx
 
 CIK|Company Name|Form Type|Date Filed|File Name
 filter by 4  - goto http://www.sec.gov/Archives/edgar/data/1004155/0001209191-14-075701.txt
@@ -61,4 +61,8 @@ GO
 SET ANSI_PADDING OFF
 
 GO 
+
+get historical price from yql 
+select * from yahoo.finance.historicaldata where symbol = "FLKS" and startDate = "2015-05-01" and endDate = "2015-05-31"
+https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22FLKS%22%20and%20startDate%20%3D%20%222015-05-01%22%20and%20endDate%20%3D%20%222015-05-31%22&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
 
