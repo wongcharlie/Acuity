@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileHelpers">
+      <HintPath>lib\FileHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="loggr-dotnet">
       <HintPath>..\packages\loggr-dotnet.1.0.9\lib\loggr-dotnet.dll</HintPath>
     </Reference>

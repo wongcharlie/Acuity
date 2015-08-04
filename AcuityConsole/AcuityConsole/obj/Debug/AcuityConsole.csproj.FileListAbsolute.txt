@@ -12,3 +12,4 @@ C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\N
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\WebDriver.dll
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\WebDriver.xml
 C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\lib\chromedriver.exe
+C:\Users\charlie\Documents\GitHub\Acuity\AcuityConsole\AcuityConsole\bin\Debug\FileHelpers.dll

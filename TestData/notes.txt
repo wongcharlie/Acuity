@@ -1,0 +1,64 @@
+
+ftp://ftp.sec.gov/edgar/daily-index/master.20150728.idx
+pipe delimtered
+/edgar/full-index/2015/QTR3/master.idx
+
+CIK|Company Name|Form Type|Date Filed|File Name
+filter by 4  - goto http://www.sec.gov/Archives/edgar/data/1004155/0001209191-14-075701.txt
+
+get xml
+
+transaction date
+report date
+ticker
+who
+quantity
+amount
+buy/sell
+price (transaction date)
+price (report date)
+price (% chg T+10)
+price (% chg T+30)
+price (% chg T+60)
+
+
+USE [bloombergstatic]
+
+GO
+
+/****** Object:  Table [dbo].[CostReportByConsumer]    Script Date: 04/08/2015 15:32:22 ******/
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+SET ANSI_PADDING ON
+
+GO
+
+CREATE TABLE [dbo].Trades
+  (
+     [TradeDate]  [DATE] NULL,
+     [ReportDate] [DATE] NULL,
+     [UserId]     [VARCHAR](50) NULL,
+     [Ticker]     [VARCHAR](50) NULL,
+     [Quantity]   BIGINT,
+     Price        FLOAT,
+     Price_Trade  FLOAT,
+     Price_Report FLOAT,
+     Price_Chg_10 float,
+     Price_Chg_30 float,
+     Price_Chg_60 float
+  )
+ON [PRIMARY]
+
+
+GO
+
+SET ANSI_PADDING OFF
+
+GO 
+
