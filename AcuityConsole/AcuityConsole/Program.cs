@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -6,27 +8,34 @@ using FileHelpers;
 
 namespace AcuityConsole
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            //download
+            if (args[0].Equals("DOWNLOAD", StringComparison.OrdinalIgnoreCase))
+            {
+                Download();
+                return;
+            }
+
+
+
             //historical 
 
-            var s = new Utils().DisplayFileFromFtpServer(new Uri("ftp://ftp.sec.gov/edgar/full-index/2013/QTR1/master.idx"));
-            // var s = File.ReadAllText(@"C:\Users\charlie\Documents\GitHub\Acuity\TestData\master.idx");
+            //var s = new Utils().DisplayFileFromFtpServer(new Uri("ftp://ftp.sec.gov/edgar/full-index/2013/QTR2/master.idx"));
+            var s = File.ReadAllText(@"C:\Users\charlie\Documents\GitHub\Acuity\TestData\master.idx");
 
             FileHelperEngine engine = new FileHelperEngine(typeof(Filing));
 
-            var ret = engine.ReadString(s) as Filing[];
+            var filings = engine.ReadString(s) as Filing[];
 
             //Parallel.ForEach(ret, filing =>
             //{
 
-            foreach (var filing in ret)
+            var tradeController = new TradeController();
+            foreach (var filing in filings)
             {
-
-
-
                 var mgr = new EdgarService();
                 if (filing.FormType.StartsWith("4"))
                 {
@@ -37,7 +46,6 @@ namespace AcuityConsole
                     }
                     catch (Exception)
                     {
-
                         return;
                     }
 
@@ -45,12 +53,10 @@ namespace AcuityConsole
                     filing.Trade = mgr.GetTrade(fullFilingText);
                     if (filing.Trade != null && filing.Trade.transactionCode == "P")
                     {
-
                         Console.WriteLine(DateTime.Now + " " + Thread.CurrentThread.ManagedThreadId + " " + filing.Trade.ToString());
-
-                        new TradeController().FillMarketData(filing.Trade);
+                        tradeController.FillMarketData(filing);
+                        new DbController().ExecuteNonQuery(filing.SqlInsert());
                     }
-
                 }
             }
             //});
@@ -76,9 +82,44 @@ namespace AcuityConsole
 
 
         }
+
+        private static void Download()
+        {
+            var tools = new Utils();
+            for (int i = 1993; i < 2016; i++)
+            {
+                for (int j = 1; j < 5; j++)
+                {
+                    var source = $"ftp://ftp.sec.gov/edgar/full-index/{i}/QTR{j}/master.idx";
+                    var target = $@"c:\temp\downloads\{i}_{j}_master.idx";
+
+                    Console.WriteLine($"source {source} target {target}");
+                    tools.DownloadFileFromFtpServer(new Uri(source), target);
+
+                }
+            }
+
+        }
+
     }
-
-
-
-
 }
+
+internal class DbController
+{
+
+    public void ExecuteNonQuery(string sql)
+    {
+        using (var sqlConnection = new SqlConnection("Data Source=devminky;Initial Catalog=bloombergstatic;Integrated Security=SSPI"))
+        {
+            using (var sqlCommand = new SqlCommand(sql, sqlConnection))
+            {
+                sqlConnection.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+        }
+
+    }
+}
+
+
+

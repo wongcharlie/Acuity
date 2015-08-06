@@ -16,6 +16,8 @@ namespace AcuityConsole
 
         public YahooHistoricalPriceRequest PriceRequest;
 
+        public double priceReportDate;
+
         public double priceChgPrev10D;
         public double priceChgPrev1M;
         public double priceChgPrev2M;

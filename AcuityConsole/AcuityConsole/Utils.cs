@@ -44,6 +44,34 @@ namespace AcuityConsole
             return fileString;//.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
         }
 
+        public void DownloadFileFromFtpServer(Uri serverUri, string localFileName)
+        {
+            // The serverUri parameter should start with the ftp:// scheme. 
+            if (serverUri.Scheme != Uri.UriSchemeFtp)
+            {
+                return;
+            }
+            // Get the object used to communicate with the server.
+            WebClient request = new WebClient();
+
+            // This example assumes the FTP site uses anonymous logon.
+            request.Credentials = new NetworkCredential("anonymous", "anonymous@ftp.sec.gov");
+            string fileString = null;
+            try
+            {
+                request.DownloadFile(serverUri.ToString(), localFileName);
+
+                //Console.WriteLine(fileString);
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            
+        }
+
+
         public string FixRssFeed(string feedXml)
         {
             var xml = new XmlDocument(); xml.LoadXml(feedXml);
