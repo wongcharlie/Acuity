@@ -11,7 +11,7 @@ namespace AcuityConsole
         private double getPrice(DateTime date, Trade trade)
         {
 
-            var quote = trade.PriceRequest.query.results.quote.FirstOrDefault(x => DateTime.ParseExact(x.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None) <= date);
+            var quote = trade.PriceRequest.query.results?.quote.FirstOrDefault(x => DateTime.ParseExact(x.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None) <= date);
 
             if (quote == null) return default(double);
             //if match is not close enough, discard.

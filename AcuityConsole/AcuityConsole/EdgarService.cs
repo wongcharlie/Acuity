@@ -35,7 +35,7 @@ namespace AcuityConsole
             filingText = filingText.Substring(filingText.IndexOf("<XML>", StringComparison.Ordinal) + 5, filingText.IndexOf("</XML>", StringComparison.Ordinal) - (filingText.IndexOf("<XML>", StringComparison.Ordinal) + 5)).Trim();
 
             var filing = new XmlDocument();
-            filing.LoadXml(filingText);
+            filing.LoadXml(filingText.Replace("\r", string.Empty).Replace("\n", string.Empty));
 
             if (filing.DocumentElement == null || filing.DocumentElement.SelectSingleNode("//transactionCode") == null) return null;
 

@@ -49,17 +49,19 @@ namespace AcuityConsole
             sql.Append($"           ,{Trade.transactionShares} \n");
             sql.Append($"           ,{Trade.transactionPricePerShare} \n");
             sql.Append($"           ,{Trade.transactionPricePerShare} \n");
-            sql.Append($"           ,<Price_Report, float,> \n");
-            sql.Append($"           ,<priceChgPrev10D, float,> \n");
-            sql.Append($"           ,<priceChgPrev1M, float,> \n");
-            sql.Append($"           ,<priceChgPrev2M, float,> \n");
-            sql.Append($"           ,<priceChgPrev3M, float,> \n");
-            sql.Append($"           ,<priceChgNext10D, float,> \n");
-            sql.Append($"           ,<priceChgNext1M, float,> \n");
-            sql.Append($"           ,<priceChgNext2M, float,> \n");
-            sql.Append($"           ,<priceChgNext3M, float,>) \n");
+            sql.Append($"           ,{Trade.priceReportDate} \n");
+            sql.Append($"           ,{Trade.priceChgPrev10D} \n");
+            sql.Append($"           ,{Trade.priceChgPrev1M} \n");
+            sql.Append($"           ,{Trade.priceChgPrev2M} \n");
+            sql.Append($"           ,{Trade.priceChgPrev3M} \n");
 
-            return sql.ToString();
+            sql.Append($"           ,{Trade.priceChgNext10D} \n");
+            sql.Append($"           ,{Trade.priceChgNext1M} \n");
+            sql.Append($"           ,{Trade.priceChgNext2M} \n");
+            sql.Append($"           ,{Trade.priceChgNext3M} )\n");
+
+
+            return sql.ToString().Replace("Infinity", "0"); //hack
         }
 
     }
